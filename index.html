@@ -11,13 +11,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Coach Chris">
     
-    <!-- Manifest Data URI (Replaces external manifest.json) -->
-    <link rel="manifest" href="data:application/manifest+json;base64,ewogICAgIm5hbWUiOiAiRnJlZSBGaXRuZXNzIFRvb2xzIC0gQ29hY2ggQ2hyaXMiLAogICAgInNob3J0X25hbWUiOiAiQ29hY2ggQ2hyaXMiLAogICAgInN0YXJ0X3VybCI6ICIuIiwKICAgICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICAgImJhY2tncm91bmRfY29sb3IiOiAiIzAwMDAwMCIsCiAgICAidGhlbWVfY29sb3IiOiAiIzAwMDAwMCIsCiAgICAiaWNvbnMiOiBbCiAgICAgICAgewogICAgICAgICAgICAic3JjIjogImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBRGdBQUFBNkNBWUFBQUNuSmdzT0FBQUFCbVZMWVdadmNuUmZjR1Z5Ym1sdmJnQUFBQUJKUlU1RXJrSmdnZyIsCiAgICAgICAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgICAgIH0KICAgIF0KfQ==">
+    <!-- Optimized Manifest Data URI for GitHub Pages Installation -->
+    <link rel="manifest" href="data:application/manifest+json;base64,ewogICAgImlkIjogIi8iLAogICAgIm5hbWUiOiAiRnJlZSBGaXRuZXNzIFRvb2xzIC0gQ29hY2ggQ2hyaXMiLAogICAgInNob3J0X25hbWUiOiAiQ29hY2ggQ2hyaXMiLAogICAgInN0YXJ0X3VybCI6ICIuLyIsCiAgICAic2NvcGUiOiAiLi8iLAogICAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgICAiYmFja2dyb3VuZF9jb2xvciI6ICIjMDAwMDAwIiwKICAgICJ0aGVtZV9jb2xvciI6ICIjMDAwMDAwIiwKICAgICJpY29ucyI6IFsKICAgICAgICB7CiAgICAgICAgICAgICJzcmMiIjogImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBRGdBQUFBNkNBWUFBQUNuSmdzT0FBQUFCbVZMWVdadmNuUmZjR1Z5Ym1sdmJnQUFBQUJKUlU1RXJrSmdnZyIsCiAgICAgICAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgICAgICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogICAgICAgIH0KICAgIF0KfQ==">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Import custom fonts */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Oswald:wght@400;500;700&display=swap');
         
         :root {
@@ -101,7 +100,6 @@
 
         .link-card:hover .arrow-icon { transform: translateX(4px); }
 
-        /* Minimal Loading Overlay */
         #launch-overlay {
             position: fixed;
             inset: 0;
@@ -121,7 +119,6 @@
             opacity: 1;
         }
 
-        /* Pulsing Icon Animation */
         #launch-icon-container {
             color: var(--text-heading);
             animation: pulse-scale 1.2s infinite ease-in-out;
@@ -136,7 +133,6 @@
             100% { transform: scale(0.85); opacity: 0.3; }
         }
 
-        /* Theme Toggle Styling */
         .theme-switch-container {
             position: relative;
             width: 44px;
@@ -178,7 +174,6 @@
         [data-theme="light"] .icon-sun { color: var(--btn-text-primary); }
         [data-theme="dark"] .icon-moon { color: var(--btn-text-primary); }
 
-        /* Modal Styles */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -218,9 +213,7 @@
 
     <!-- Minimal Loading Overlay -->
     <div id="launch-overlay">
-        <div id="launch-icon-container">
-            <!-- Icon injected here -->
-        </div>
+        <div id="launch-icon-container"></div>
     </div>
 
     <!-- Information Modal -->
@@ -318,7 +311,6 @@
             </div>
 
             <div class="space-y-3 flex flex-col w-full">
-                <!-- Internal Tools turned External -->
                 <a href="https://coachchriscrc.github.io/wodgenerator" target="_blank" rel="noopener noreferrer" class="link-card external-link p-4 rounded-xl">
                     <div class="flex items-center space-x-4">
                         <i data-lucide="zap" class="w-5 h-5"></i>
@@ -327,7 +319,6 @@
                     <i data-lucide="external-link" class="arrow-icon w-4 h-4 opacity-60"></i>
                 </a>
 
-                <!-- Internal Tools -->
                 <div data-tool="1rm" class="link-card tool-btn p-4 rounded-xl"> 
                     <div class="flex items-center space-x-4">
                         <i data-lucide="dumbbell" class="w-5 h-5"></i>
@@ -336,7 +327,6 @@
                     <i data-lucide="arrow-right" class="arrow-icon w-5 h-5 transition-transform duration-300"></i>
                 </div>
 
-                <!-- External Tools -->
                 <a href="https://coachchriscrc.github.io/free-calorie-calculator" target="_blank" rel="noopener noreferrer" class="link-card external-link p-4 rounded-xl">
                     <div class="flex items-center space-x-4">
                         <i data-lucide="utensils" class="w-5 h-5"></i>
@@ -370,7 +360,6 @@
                 </div>
             </div>
 
-            <!-- Social Media Section -->
             <div class="flex justify-center space-x-12 mt-12 pb-4">
                 <a href="#" class="group flex flex-col items-center gap-2 hover:opacity-100 transition-all opacity-50" style="color: var(--text-main)">
                     <i data-lucide="message-circle" class="w-6 h-6"></i>
@@ -388,7 +377,6 @@
         </main>
     </div>
 
-    <!-- Footer -->
     <footer class="w-full text-center py-8 px-6 max-w-lg" style="color: var(--text-muted)">
         <div class="mb-6 space-y-2">
             <h4 class="text-[9px] font-black uppercase tracking-[0.2em]">Disclaimer</h4>
@@ -405,26 +393,28 @@
     <script>
         lucide.createIcons();
 
-        // --- PWA SERVICE WORKER REGISTRATION ---
+        // Optimized PWA Service Worker for Mobile Installation
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 const swScript = `
-                    const CACHE_NAME = 'coach-chris-cache-v1';
-                    self.addEventListener('install', (event) => {
-                        event.waitUntil(caches.open(CACHE_NAME));
+                    const CACHE_NAME = 'coach-chris-v2';
+                    const ASSETS = ['./', './index.html'];
+                    self.addEventListener('install', (e) => {
+                        self.skipWaiting();
+                        e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
                     });
-                    self.addEventListener('fetch', (event) => {
-                        event.respondWith(
-                            fetch(event.request).catch(() => caches.match(event.request))
-                        );
+                    self.addEventListener('activate', (e) => {
+                        e.waitUntil(clients.claim());
+                    });
+                    self.addEventListener('fetch', (e) => {
+                        e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
                     });
                 `;
                 const blob = new Blob([swScript], { type: 'application/javascript' });
                 const swUrl = URL.createObjectURL(blob);
-                
-                navigator.serviceWorker.register(swUrl)
-                    .then(reg => console.log('Service Worker registered'))
-                    .catch(err => console.log('Service Worker registration failed', err));
+                navigator.serviceWorker.register(swUrl, { scope: './' })
+                    .then(() => console.log('PWA Ready'))
+                    .catch(err => console.error('PWA Fail', err));
             });
         }
 
@@ -448,7 +438,6 @@
             
             if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-            // Ensure overlay is hidden when navigating back
             window.addEventListener('pageshow', (event) => {
                 if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                     launchOverlay.classList.remove('active');
@@ -467,10 +456,8 @@
             document.getElementById('close-modal').addEventListener('click', () => closeModal(infoModal));
             document.getElementById('modal-confirm').addEventListener('click', () => closeModal(infoModal));
             
-            // External link animation
             document.querySelectorAll('a.link-card').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    // Only apply animation if it's an external link
                     if (this.getAttribute('target') === '_blank') {
                         e.preventDefault();
                         const targetUrl = this.href;
@@ -483,11 +470,10 @@
                         }
 
                         launchOverlay.classList.add('active');
-                        
                         setTimeout(() => {
                             window.open(targetUrl, '_blank');
                             launchOverlay.classList.remove('active');
-                        }, 1200);
+                        }, 1000);
                     }
                 });
             });
