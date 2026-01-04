@@ -408,7 +408,6 @@
         // --- PWA SERVICE WORKER REGISTRATION ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                // Create a blob representing the service worker script
                 const swScript = `
                     const CACHE_NAME = 'coach-chris-cache-v1';
                     self.addEventListener('install', (event) => {
@@ -449,7 +448,7 @@
             
             if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-            // FIX: Ensure overlay is hidden when navigating back via browser history
+            // Ensure overlay is hidden when navigating back
             window.addEventListener('pageshow', (event) => {
                 if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                     launchOverlay.classList.remove('active');
@@ -468,25 +467,28 @@
             document.getElementById('close-modal').addEventListener('click', () => closeModal(infoModal));
             document.getElementById('modal-confirm').addEventListener('click', () => closeModal(infoModal));
             
-            // External link logic: Show animation, THEN redirect
+            // External link animation
             document.querySelectorAll('a.link-card').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetUrl = this.href;
-                    const iconElement = this.querySelector('[data-lucide]');
-                    
-                    if (iconElement) {
-                        const iconName = iconElement.getAttribute('data-lucide');
-                        launchIconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-16 h-16"></i>`;
-                        lucide.createIcons();
-                    }
+                    // Only apply animation if it's an external link
+                    if (this.getAttribute('target') === '_blank') {
+                        e.preventDefault();
+                        const targetUrl = this.href;
+                        const iconElement = this.querySelector('[data-lucide]');
+                        
+                        if (iconElement) {
+                            const iconName = iconElement.getAttribute('data-lucide');
+                            launchIconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-16 h-16"></i>`;
+                            lucide.createIcons();
+                        }
 
-                    launchOverlay.classList.add('active');
-                    
-                    setTimeout(() => {
-                        window.location.href = targetUrl;
-                    }, 1200);
+                        launchOverlay.classList.add('active');
+                        
+                        setTimeout(() => {
+                            window.open(targetUrl, '_blank');
+                            launchOverlay.classList.remove('active');
+                        }, 1200);
+                    }
                 });
             });
 
