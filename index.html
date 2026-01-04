@@ -1,1 +1,512 @@
-...
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Fitness Tools - Coach Chris</title>
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#000000">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Coach Chris">
+    
+    <!-- Inline Web App Manifest using Data URL -->
+    <link rel="manifest" href="data:application/manifest+json, %7B%22name%22%3A%22Coach%20Chris%20Fitness%20Tools%22%2C%22short_name%22%3A%22Coach%20Chris%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23000000%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A//cdn-icons-png.flaticon.com/512/2964/2964514.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image/png%22%7D%5D%7D">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Import custom fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Oswald:wght@400;500;700&display=swap');
+        
+        :root {
+            --bg-page: #f3f4f6;
+            --bg-card: #ffffff;
+            --border-color: #e5e7eb;
+            --text-main: #1f2937;
+            --text-heading: #000000;
+            --text-muted: #9ca3af;
+            --text-accent: #6b7280;
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            --bg-toggle: #f3f4f6;
+            --toggle-pill-bg: #e5e7eb;
+            --bg-btn-primary: #000000;
+            --btn-text-primary: #ffffff;
+            --link-hover-bg: #000000;
+            --link-hover-text: #ffffff;
+            --modal-overlay: rgba(0, 0, 0, 0.4);
+            --launch-overlay: rgba(255, 255, 255, 0.9);
+        }
+
+        [data-theme="dark"] {
+            --bg-page: #0a0a0a;
+            --bg-card: #121212;
+            --border-color: #262626;
+            --text-main: #ffffff;
+            --text-heading: #ffffff;
+            --text-muted: #525252;
+            --text-accent: #a3a3a3;
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            --bg-toggle: #1a1a1a;
+            --toggle-pill-bg: #1a1a1a;
+            --bg-btn-primary: #ffffff;
+            --btn-text-primary: #000000;
+            --link-hover-bg: #ffffff;
+            --link-hover-text: #000000;
+            --modal-overlay: rgba(0, 0, 0, 0.8);
+            --launch-overlay: rgba(10, 10, 10, 0.95);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .font-brand { font-family: 'Oswald', sans-serif; }
+
+        .app-card {
+            background-color: var(--bg-card);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .link-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .link-card:hover {
+            transform: translateY(-2px);
+            background-color: var(--link-hover-bg);
+            color: var(--link-hover-text);
+            border-color: var(--link-hover-bg);
+        }
+
+        .link-card:active {
+            transform: scale(0.98) translateY(0);
+            opacity: 0.9;
+        }
+
+        .link-card:hover .arrow-icon { transform: translateX(4px); }
+
+        /* Minimal Loading Overlay */
+        #launch-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background-color: var(--launch-overlay);
+            backdrop-filter: blur(12px);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #launch-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Pulsing Icon Animation */
+        #launch-icon-container {
+            color: var(--text-heading);
+            animation: pulse-scale 1.2s infinite ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes pulse-scale {
+            0% { transform: scale(0.85); opacity: 0.3; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.85); opacity: 0.3; }
+        }
+
+        /* Theme Toggle Styling */
+        .theme-switch-container {
+            position: relative;
+            width: 44px;
+            height: 22px;
+            background-color: var(--toggle-pill-bg);
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            padding: 2px;
+            border: 1px solid var(--border-color);
+        }
+
+        .theme-switch-circle {
+            position: absolute;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background-color: var(--bg-btn-primary);
+            border-radius: 50%;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 10;
+        }
+
+        [data-theme="dark"] .theme-switch-circle { transform: translateX(22px); }
+
+        .theme-switch-icons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0 3px;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .theme-switch-icons i { width: 9px; height: 9px; color: var(--text-muted); }
+        [data-theme="light"] .icon-sun { color: var(--btn-text-primary); }
+        [data-theme="dark"] .icon-moon { color: var(--btn-text-primary); }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            background-color: var(--modal-overlay);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .modal-content {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: 100%;
+            max-width: 24rem;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .modal-overlay.active .modal-content { transform: scale(1); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4" data-theme="light">
+
+    <!-- Minimal Loading Overlay -->
+    <div id="launch-overlay">
+        <div id="launch-icon-container">
+            <!-- Icon injected here -->
+        </div>
+    </div>
+
+    <!-- Information Modal -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-content shadow-2xl">
+            <button id="close-modal" class="absolute top-4 right-4 p-2 rounded-full hover:opacity-70 transition-opacity" style="color: var(--text-muted)">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="flex flex-col items-center text-center">
+                <div class="p-4 rounded-2xl mb-4" style="background-color: var(--bg-toggle)">
+                    <i data-lucide="help-circle" class="w-8 h-8" style="color: var(--text-heading)"></i>
+                </div>
+                <h3 class="font-brand font-bold text-2xl uppercase mb-3" style="color: var(--text-heading)">Toolkit Guide</h3>
+                <div class="space-y-4 text-sm leading-relaxed text-left" style="color: var(--text-accent)">
+                    <p>Welcome to the <strong>Circular Roots</strong> toolkit. Here’s how to get the most out of these resources:</p>
+                    <ul class="space-y-3 list-none">
+                        <li class="flex gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: var(--text-heading)"></i>
+                            <span>Select any tool from the menu to start your calculation or generate training sessions.</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: var(--text-heading)"></i>
+                            <span>Toggle between <strong>Light</strong> and <strong>Dark</strong> modes using the switch above.</span>
+                        </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: var(--text-heading)"></i>
+                            <span>Calculators provide localized estimates based on standard fitness protocols.</span>
+                        </li>
+                    </ul>
+                </div>
+                <button id="modal-confirm" class="w-full mt-8 py-3 font-black uppercase tracking-widest rounded-xl text-xs" style="background-color: var(--bg-btn-primary); color: var(--btn-text-primary)">Start Training</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dev Modal -->
+    <div id="dev-modal-overlay" class="modal-overlay">
+        <div class="modal-content shadow-2xl">
+            <button id="close-dev-modal" class="absolute top-4 right-4 p-2 rounded-full hover:opacity-70 transition-opacity" style="color: var(--text-muted)">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            <div class="flex flex-col items-center text-center">
+                <div class="p-4 rounded-2xl mb-4" style="background-color: var(--bg-toggle)">
+                    <div id="dev-icon-wrapper">
+                        <i id="dev-icon" data-lucide="construction" class="w-8 h-8" style="color: var(--text-heading)"></i>
+                    </div>
+                </div>
+                <h3 id="dev-title" class="font-brand font-bold text-2xl uppercase mb-3" style="color: var(--text-heading)">In the Lab</h3>
+                <p id="dev-text" class="text-sm leading-relaxed mb-6" style="color: var(--text-accent)">
+                    Fine-tuning the algorithms to ensure peak performance. Live soon.
+                </p>
+                <button id="dev-modal-confirm" class="w-full py-3 font-black uppercase tracking-widest rounded-xl text-xs" style="background-color: var(--bg-btn-primary); color: var(--btn-text-primary)">Back to Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Card -->
+    <div class="app-card w-full max-w-md rounded-3xl overflow-hidden flex flex-col items-center">
+        
+        <header class="w-full px-8 py-10 flex justify-between items-start">
+            <div class="flex flex-col select-none">
+                <h1 class="font-brand font-bold text-4xl leading-none tracking-wide mb-1" style="color: var(--text-heading)">COACH CHRIS</h1>
+                <h2 class="font-brand font-bold text-lg leading-none mb-[2px]" style="color: var(--text-accent)">CIRCULAR ROOTS COACHING</h2>
+                <h3 class="font-brand font-bold text-lg leading-none uppercase" style="color: var(--text-muted)">Train Uncnvntnl</h3>
+            </div>
+            
+            <div class="flex flex-col items-center gap-3">
+                <div class="flex flex-col items-center gap-1.5">
+                    <span class="text-[9px] font-black uppercase tracking-widest opacity-60" style="color: var(--text-muted)">Theme</span>
+                    <div id="theme-toggle" class="theme-switch-container" title="Toggle Light/Dark">
+                        <div class="theme-switch-circle"></div>
+                        <div class="theme-switch-icons">
+                            <i data-lucide="sun" class="icon-sun"></i>
+                            <i data-lucide="moon" class="icon-moon"></i>
+                        </div>
+                    </div>
+                </div>
+                <button id="open-info" class="p-2.5 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center" style="background-color: var(--bg-toggle); color: var(--text-heading)" title="How to use">
+                    <i data-lucide="help-circle" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="w-full px-8 flex-grow pb-12">
+            <div class="text-center mb-10 mt-2">
+                <div class="inline-block p-1 rounded-full mb-4 shadow-sm" style="background-color: var(--bg-toggle); border: 1px solid var(--border-color)">
+                    <div class="w-24 h-24 rounded-full flex items-center justify-center overflow-hidden" style="background-color: var(--bg-btn-primary)">
+                        <i data-lucide="dumbbell" class="w-10 h-10" style="color: var(--btn-text-primary)"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-black mb-2 uppercase" style="color: var(--text-heading)">Free Fitness Tools</h2>
+                <p class="text-sm max-w-[280px] mx-auto leading-relaxed" style="color: var(--text-accent)">
+                    No nonsense tools to support & optimise your training journey
+                </p>
+            </div>
+
+            <div class="space-y-3 flex flex-col w-full">
+                <!-- Internal Tools turned External -->
+                <a href="https://coachchriscrc.github.io/wodgenerator" target="_blank" rel="noopener noreferrer" class="link-card external-link p-4 rounded-xl">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="zap" class="w-5 h-5"></i>
+                        <span class="font-bold text-base uppercase tracking-wider">WOD Generator</span>
+                    </div>
+                    <i data-lucide="external-link" class="arrow-icon w-4 h-4 opacity-60"></i>
+                </a>
+
+                <!-- Internal Tools -->
+                <div data-tool="1rm" class="link-card tool-btn p-4 rounded-xl"> 
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="dumbbell" class="w-5 h-5"></i>
+                        <span class="font-bold text-base uppercase tracking-wider">1RM Calculator</span>
+                    </div>
+                    <i data-lucide="arrow-right" class="arrow-icon w-5 h-5 transition-transform duration-300"></i>
+                </div>
+
+                <!-- External Tools -->
+                <a href="https://coachchriscrc.github.io/free-calorie-calculator" target="_blank" rel="noopener noreferrer" class="link-card external-link p-4 rounded-xl">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="utensils" class="w-5 h-5"></i>
+                        <span class="font-bold text-base uppercase tracking-wider">Calorie Calculator</span>
+                    </div>
+                    <i data-lucide="external-link" class="arrow-icon w-4 h-4 opacity-60"></i>
+                </a>
+                
+                <a href="https://coachchriscrc.github.io/free-bf-calculator" target="_blank" rel="noopener noreferrer" class="link-card external-link p-4 rounded-xl">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="ruler" class="w-5 h-5"></i>
+                        <span class="font-bold text-base uppercase tracking-wider">Bodyfat Calculator</span>
+                    </div>
+                    <i data-lucide="external-link" class="arrow-icon w-4 h-4 opacity-60"></i>
+                </a>
+
+                <div data-tool="timer" class="link-card tool-btn p-4 rounded-xl">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="timer" class="w-5 h-5"></i>
+                        <span class="font-bold text-base uppercase tracking-wider">Interval Timer</span>
+                    </div>
+                    <i data-lucide="arrow-right" class="arrow-icon w-5 h-5 transition-transform duration-300"></i>
+                </div>
+
+                <div data-tool="newsletter" class="newsletter-cta tool-btn p-4 rounded-xl mt-6 shadow-md flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="mail" class="w-5 h-5"></i>
+                        <span class="font-bold text-base uppercase tracking-wider">Join the Newsletter</span>
+                    </div>
+                    <span class="text-[10px] font-black bg-white text-black px-2 py-0.5 rounded uppercase">FREE</span>
+                </div>
+            </div>
+
+            <!-- Social Media Section -->
+            <div class="flex justify-center space-x-12 mt-12 pb-4">
+                <a href="#" class="group flex flex-col items-center gap-2 hover:opacity-100 transition-all opacity-50" style="color: var(--text-main)">
+                    <i data-lucide="message-circle" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-black uppercase tracking-widest">WhatsApp</span>
+                </a>
+                <a href="#" class="group flex flex-col items-center gap-2 hover:opacity-100 transition-all opacity-50" style="color: var(--text-main)">
+                    <i data-lucide="instagram" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-black uppercase tracking-widest">Instagram</span>
+                </a>
+                <a href="#" class="group flex flex-col items-center gap-2 hover:opacity-100 transition-all opacity-50" style="color: var(--text-main)">
+                    <i data-lucide="facebook" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-black uppercase tracking-widest">Facebook</span>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full text-center py-8 px-6 max-w-lg" style="color: var(--text-muted)">
+        <div class="mb-6 space-y-2">
+            <h4 class="text-[9px] font-black uppercase tracking-[0.2em]">Disclaimer</h4>
+            <p class="text-[8px] leading-normal normal-case opacity-70 italic">
+                The content provided by these tools is for informational purposes only and is not intended as medical advice.
+            </p>
+        </div>
+        <div class="text-[8px] sm:text-[9px] uppercase tracking-[0.1em] sm:tracking-[0.15em] font-bold leading-relaxed">
+            <p>&copy; <span id="current-year"></span> COACH CHRIS | CIRCULAR ROOTS COACHING</p>
+            <p>All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // PWA Implementation: Service Worker Registration using a Blob URL for single-file portability
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    const CACHE_NAME = 'coach-chris-v1';
+                    const urlsToCache = [location.href];
+                    self.addEventListener('install', (event) => {
+                        event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache)));
+                    });
+                    self.addEventListener('fetch', (event) => {
+                        event.respondWith(caches.match(event.request).then((response) => response || fetch(event.request)));
+                    });
+                `;
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl).catch(err => console.log('SW registration failed:', err));
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.body;
+            const themeToggle = document.getElementById('theme-toggle');
+            const yearSpan = document.getElementById('current-year');
+            const infoModal = document.getElementById('modal-overlay');
+            const devModal = document.getElementById('dev-modal-overlay');
+            const launchOverlay = document.getElementById('launch-overlay');
+            const launchIconContainer = document.getElementById('launch-icon-container');
+            const devTitle = document.getElementById('dev-title');
+            const devText = document.getElementById('dev-text');
+            const devIconWrapper = document.getElementById('dev-icon-wrapper');
+            
+            const toolData = {
+                '1rm': { title: "Heavy Loading", text: "Finalizing precision formulas for power and strength lifts. Coming soon.", icon: "dumbbell" },
+                'timer': { title: "Synchronizing", text: "Our performance clock is being calibrated for interval training. Coming soon.", icon: "timer" },
+                'newsletter': { title: "Drafting Intel", text: "Assembling unconventional training wisdom for your inbox. Coming soon.", icon: "mail" }
+            };
+            
+            if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+            // FIX: Ensure overlay is hidden when navigating back via browser history
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                    launchOverlay.classList.remove('active');
+                }
+            });
+
+            themeToggle.addEventListener('click', () => {
+                const isDark = body.getAttribute('data-theme') === 'dark';
+                body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            });
+
+            const openModal = (m) => m.classList.add('active');
+            const closeModal = (m) => m.classList.remove('active');
+
+            document.getElementById('open-info').addEventListener('click', () => openModal(infoModal));
+            document.getElementById('close-modal').addEventListener('click', () => closeModal(infoModal));
+            document.getElementById('modal-confirm').addEventListener('click', () => closeModal(infoModal));
+            
+            // External link logic: Show animation, THEN redirect
+            document.querySelectorAll('a.link-card').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetUrl = this.href;
+                    const iconElement = this.querySelector('[data-lucide]');
+                    
+                    if (iconElement) {
+                        const iconName = iconElement.getAttribute('data-lucide');
+                        launchIconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-16 h-16"></i>`;
+                        lucide.createIcons();
+                    }
+
+                    launchOverlay.classList.add('active');
+                    
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 1200);
+                });
+            });
+
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const toolKey = btn.getAttribute('data-tool');
+                    const data = toolData[toolKey];
+                    if (data) {
+                        devTitle.textContent = data.title;
+                        devText.textContent = data.text;
+                        devIconWrapper.innerHTML = `<i data-lucide="${data.icon}" class="w-8 h-8" style="color: var(--text-heading)"></i>`;
+                        lucide.createIcons();
+                        openModal(devModal);
+                    }
+                });
+            });
+
+            document.getElementById('close-dev-modal').addEventListener('click', () => closeModal(devModal));
+            document.getElementById('dev-modal-confirm').addEventListener('click', () => closeModal(devModal));
+
+            [infoModal, devModal].forEach(m => m.addEventListener('click', (e) => {
+                if (e.target === m) closeModal(m);
+            }));
+        });
+    </script>
+</body>
+</html>
+
+
