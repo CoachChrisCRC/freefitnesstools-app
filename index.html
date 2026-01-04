@@ -402,10 +402,17 @@
         lucide.createIcons();
 
         // --- PWA Support ---
-        // 1. Generate Manifest dynamically for single-file deployment
+        const PWA_CONFIG = {
+            name: "Coach Chris Tools",
+            shortName: "Coach Chris",
+            // Clean minimalist dumbbell icon on black background
+            iconUrl: "https://cdn-icons-png.flaticon.com/512/8112/8112462.png" 
+        };
+
+        // 1. Generate Manifest dynamically
         const manifest = {
-            "name": "Coach Chris Fitness Tools",
-            "short_name": "Coach Chris",
+            "name": PWA_CONFIG.name,
+            "short_name": PWA_CONFIG.shortName,
             "start_url": ".",
             "display": "standalone",
             "background_color": "#000000",
@@ -413,7 +420,7 @@
             "description": "Unconventional fitness tools by Circular Roots Coaching",
             "icons": [
                 {
-                    "src": "https://cdn-icons-png.flaticon.com/512/2964/2964514.png",
+                    "src": PWA_CONFIG.iconUrl,
                     "sizes": "512x512",
                     "type": "image/png",
                     "purpose": "any maskable"
@@ -435,7 +442,6 @@
                     self.skipWaiting();
                 });
                 self.addEventListener('fetch', (e) => {
-                    // Standard pass-through for online-first experience
                     e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
                 });
             `;
