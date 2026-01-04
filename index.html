@@ -10,8 +10,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Coach Chris">
     
-    <!-- Updated Manifest using the Lucide Dumbbell SVG logic -->
-    <link rel="manifest" href="data:application/manifest+json, %7B%22name%22%3A%22Coach%20Chris%20Fitness%20Tools%22%2C%22short_name%22%3A%22Coach%20Chris%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23000000%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0iTTYgNy41aDJtMTAgMGgyTTIgMTFoOG00IDBoOE02IDE2LjVoMm0xMCAwaDJNOCAzaDh2MThIOFptLTUgOGgybTE0IDBoMk04IDEyaDgiLz48L3N2Zz4=%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image/svg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
+    <!-- Updated Manifest with New Custom Brand Icon -->
+    <link rel="manifest" href="data:application/manifest+json, %7B%22name%22%3A%22Coach%20Chris%20Fitness%20Tools%22%2C%22short_name%22%3A%22Coach%20Chris%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23000000%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDUxMiA1MTIiPjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSIjMDAwMDAwIi8+PGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSIyMjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMjAiLz48ZyBmaWxsPSJ3aGl0ZSI+PHJlY3QgeD0iMTgwIiB5PSIyNDAiIHdpZHRoPSIxNTIiIGhlaWdodD0iMzIiIHJ4PSI0Ii8+PHJlY3QgeD0iMTEwIiB5PSIxNjAiIHdpZHRoPSI3MCIgaGVpZ2h0PSIxOTIiIHJ4PSI4Ii8+PHJlY3QgeD0iMzMyIiB5PSIxNjAiIHdpZHRoPSI3MCIgaGVpZ2h0PSIxOTIiIHJ4PSI4Ii8+PHJlY3QgeD0iODAiIHk9IjIwMCIgdmlkdGg9IjMwIiBoZWlnaHQ9IjExMiIgcng9IjQiLz48cmVjdCB4PSI0MDIiIHk9IjIwMCIgdmlkdGg9IjMwIiBoZWlnaHQ9IjExMiIgcng9IjQiLz48L2c+PC9zdmc+%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image/svg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -408,7 +408,7 @@
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 const swCode = `
-                    const CACHE_NAME = 'coach-chris-v3';
+                    const CACHE_NAME = 'coach-chris-v4';
                     const urlsToCache = [location.href];
                     self.addEventListener('install', (event) => {
                         event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache)));
