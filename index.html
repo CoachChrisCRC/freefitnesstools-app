@@ -401,12 +401,11 @@
     <script>
         lucide.createIcons();
 
-        // --- PWA Support ---
+        // --- PWA Support & Custom Icon Configuration ---
         const PWA_CONFIG = {
             name: "Coach Chris Tools",
             shortName: "Coach Chris",
-            // Clean minimalist dumbbell icon on black background
-            iconUrl: "https://cdn-icons-png.flaticon.com/512/8112/8112462.png" 
+            iconUrl: "FitnessTools-AppIcon.png" 
         };
 
         // 1. Generate Manifest dynamically
@@ -427,27 +426,33 @@
                 }
             ]
         };
+        
+        // Inject manifest and touch icons for iOS
         const stringManifest = JSON.stringify(manifest);
         const blob = new Blob([stringManifest], {type: 'application/json'});
         const manifestURL = URL.createObjectURL(blob);
+        
         const manifestTag = document.createElement('link');
         manifestTag.rel = 'manifest';
         manifestTag.href = manifestURL;
         document.head.appendChild(manifestTag);
 
+        const appleIconTag = document.createElement('link');
+        appleIconTag.rel = 'apple-touch-icon';
+        appleIconTag.href = PWA_CONFIG.iconUrl;
+        document.head.appendChild(appleIconTag);
+
         // 2. Register Inline Service Worker
         if ('serviceWorker' in navigator) {
             const swCode = `
-                self.addEventListener('install', (e) => {
-                    self.skipWaiting();
-                });
+                self.addEventListener('install', (e) => self.skipWaiting());
                 self.addEventListener('fetch', (e) => {
                     e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
                 });
             `;
             const swBlob = new Blob([swCode], {type: 'text/javascript'});
             const swUrl = URL.createObjectURL(swBlob);
-            navigator.serviceWorker.register(swUrl).catch(err => console.log("SW registration failed", err));
+            navigator.serviceWorker.register(swUrl).catch(err => console.log("SW Error", err));
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -470,7 +475,6 @@
             
             if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-            // FIX: Ensure overlay is hidden when navigating back via browser history
             window.addEventListener('pageshow', (event) => {
                 if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                     launchOverlay.classList.remove('active');
@@ -489,25 +493,18 @@
             document.getElementById('close-modal').addEventListener('click', () => closeModal(infoModal));
             document.getElementById('modal-confirm').addEventListener('click', () => closeModal(infoModal));
             
-            // External link logic: Show animation, THEN redirect
             document.querySelectorAll('a.link-card').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    
                     const targetUrl = this.href;
                     const iconElement = this.querySelector('[data-lucide]');
-                    
                     if (iconElement) {
                         const iconName = iconElement.getAttribute('data-lucide');
                         launchIconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-16 h-16"></i>`;
                         lucide.createIcons();
                     }
-
                     launchOverlay.classList.add('active');
-                    
-                    setTimeout(() => {
-                        window.location.href = targetUrl;
-                    }, 1200);
+                    setTimeout(() => { window.location.href = targetUrl; }, 1200);
                 });
             });
 
