@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Fitness Tools - Coach Chris</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Coach Chris">
+    
+    <!-- Manifest Data URI (Replaces external manifest.json) -->
+    <link rel="manifest" href="data:application/manifest+json;base64,ewogICAgIm5hbWUiOiAiRnJlZSBGaXRuZXNzIFRvb2xzIC0gQ29hY2ggQ2hyaXMiLAogICAgInNob3J0X25hbWUiOiAiQ29hY2ggQ2hyaXMiLAogICAgInN0YXJ0X3VybCI6ICIuIiwKICAgICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICAgImJhY2tncm91bmRfY29sb3IiOiAiIzAwMDAwMCIsCiAgICAidGhlbWVfY29sb3IiOiAiIzAwMDAwMCIsCiAgICAiaWNvbnMiOiBbCiAgICAgICAgewogICAgICAgICAgICAic3JjIjogImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBRGdBQUFBNkNBWUFBQUNuSmdzT0FBQUFCbVZMWVdadmNuUmZjR1Z5Ym1sdmJnQUFBQUJKUlU1RXJrSmdnZyIsCiAgICAgICAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgICAgIH0KICAgIF0KfQ==">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -395,6 +405,30 @@
     <script>
         lucide.createIcons();
 
+        // --- PWA SERVICE WORKER REGISTRATION ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Create a blob representing the service worker script
+                const swScript = `
+                    const CACHE_NAME = 'coach-chris-cache-v1';
+                    self.addEventListener('install', (event) => {
+                        event.waitUntil(caches.open(CACHE_NAME));
+                    });
+                    self.addEventListener('fetch', (event) => {
+                        event.respondWith(
+                            fetch(event.request).catch(() => caches.match(event.request))
+                        );
+                    });
+                `;
+                const blob = new Blob([swScript], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl)
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed', err));
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             const body = document.body;
             const themeToggle = document.getElementById('theme-toggle');
@@ -480,3 +514,4 @@
     </script>
 </body>
 </html>
+
