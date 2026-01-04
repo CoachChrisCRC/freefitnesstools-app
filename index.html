@@ -4,17 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Fitness Tools - Coach Chris</title>
-    
-    <!-- PWA Meta Tags -->
+    <!-- PWA Primary Meta Tags -->
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Coach Chris">
-    <meta name="description" content="Free Fitness Tools by Coach Chris - Circular Roots Coaching">
     
-    <!-- Manifest Link (Self-contained Data URI with Dumbbell Icon) -->
-    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJpZCI6ICJjb2FjaC1jaHJpcy10b29sa2l0IiwKICAic2hvcnRfbmFtZSI6ICJDb2FjaCBDaHJpcyIsCiAgIm5hbWUiOiAiRnJlZSBGaXRuZXNzIFRvb2xzIC0gQ29hY2ggQ2hyaXMiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWwsPHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyB2aWV3Qm94PScwIDAgMjQgMjQnIGZpbGw9J25vbmUnIHN0cm9rZT0nd2hpdGUnIHN0cm9rZS13aWR0aD0nMicgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJyBzdHJva2UtbGluZWpvaW49J3JvdW5kJz48cmVjdCB3aWR0aD0nNTEyJyBoZWlnaHQ9JzUxMicgeD0nLTI0NCcgeT0nLTI0NCcgc3Ryb2tlPSdub25lJyBmaWxsPScjMDAwMDAwJy8+PHBhdGggZD0nbTYuNSA2LjUgMTEgMTEnLz48cGF0aCBkPSdtMTUgNyAzIDMgMy0zLTMtM1onLz48cGF0aCBkPSdtOSAxNSAzIDMtMyAzLTMtM1onLz48cGF0aCBkPSdtMTcgMiA1IDUgNS01LTUtNVonLz48cGF0aCBkPSdtMiAxNyA1IDUgNS01LTUtNVonLz48L3N2Zz4iLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9CiAgXSwKICAic3RhcnRfdXJsIjogIi4vIiwKICAic2Rpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzAwMDAwMCIsCiAgInRoZW1lX2NvbG9yIjogIiMwMDAwMDAiCn0=">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -406,23 +401,47 @@
     <script>
         lucide.createIcons();
 
-        // --- PWA Service Worker Registration ---
+        // --- PWA Support ---
+        // 1. Generate Manifest dynamically for single-file deployment
+        const manifest = {
+            "name": "Coach Chris Fitness Tools",
+            "short_name": "Coach Chris",
+            "start_url": ".",
+            "display": "standalone",
+            "background_color": "#000000",
+            "theme_color": "#000000",
+            "description": "Unconventional fitness tools by Circular Roots Coaching",
+            "icons": [
+                {
+                    "src": "https://cdn-icons-png.flaticon.com/512/2964/2964514.png",
+                    "sizes": "512x512",
+                    "type": "image/png",
+                    "purpose": "any maskable"
+                }
+            ]
+        };
+        const stringManifest = JSON.stringify(manifest);
+        const blob = new Blob([stringManifest], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(blob);
+        const manifestTag = document.createElement('link');
+        manifestTag.rel = 'manifest';
+        manifestTag.href = manifestURL;
+        document.head.appendChild(manifestTag);
+
+        // 2. Register Inline Service Worker
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                const swContent = `
-                    const CACHE_NAME = 'coach-chris-v2';
-                    const urlsToCache = [location.href];
-                    self.addEventListener('install', event => {
-                        event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)));
-                    });
-                    self.addEventListener('fetch', event => {
-                        event.respondWith(caches.match(event.request).then(response => response || fetch(event.request)));
-                    });
-                `;
-                const blob = new Blob([swContent], { type: 'text/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(swUrl).catch(err => console.log('SW registration failed:', err));
-            });
+            const swCode = `
+                self.addEventListener('install', (e) => {
+                    self.skipWaiting();
+                });
+                self.addEventListener('fetch', (e) => {
+                    // Standard pass-through for online-first experience
+                    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+                });
+            `;
+            const swBlob = new Blob([swCode], {type: 'text/javascript'});
+            const swUrl = URL.createObjectURL(swBlob);
+            navigator.serviceWorker.register(swUrl).catch(err => console.log("SW registration failed", err));
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -445,6 +464,7 @@
             
             if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
+            // FIX: Ensure overlay is hidden when navigating back via browser history
             window.addEventListener('pageshow', (event) => {
                 if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                     launchOverlay.classList.remove('active');
@@ -463,6 +483,7 @@
             document.getElementById('close-modal').addEventListener('click', () => closeModal(infoModal));
             document.getElementById('modal-confirm').addEventListener('click', () => closeModal(infoModal));
             
+            // External link logic: Show animation, THEN redirect
             document.querySelectorAll('a.link-card').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
