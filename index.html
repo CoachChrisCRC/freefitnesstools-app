@@ -10,8 +10,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Coach Chris">
     
-    <!-- Inline Web App Manifest using Data URL with exact Dumbbell SVG Icon -->
-    <link rel="manifest" href="data:application/manifest+json, %7B%22name%22%3A%22Coach%20Chris%20Fitness%20Tools%22%2C%22short_name%22%3A%22Coach%20Chris%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23000000%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiPjxyZWN0IHdpZHRoPSI4IiBoZWlnaHQ9IjUiIHg9IjIiIHk9IjQiIHJ4PSIyIi8+PHJlY3Qgd2lkdGg9IjgiIGhlaWdodD0iNSIgeD0iMiIgeT0iMTUiIHJ4PSIyIi8+PHJlY3Qgd2lkdGg9IjgiIGhlaWdodD0iNSIgeD0iMTQiIHk9IjQiIHJ4PSIyIi8+PHJlY3Qgd2lkdGg9IjgiIGhlaWdodD0iNSIgeD0iMTQiIHk9IjE1IiByeD0iMiIvPjxwYXRoIGQ9Ik02IDEydjJtMTIgLTR2Mm04IDRoLThNMTAgNmg0bTAgMTJoLTRNMiAxMmg4bTQgMGg4Ii8+PC9zdmc+%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image/svg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
+    <!-- Inline Web App Manifest using the specific provided SVG/Logo data -->
+    <link rel="manifest" href="data:application/manifest+json, %7B%22name%22%3A%22Coach%20Chris%20Fitness%20Tools%22%2C%22short_name%22%3A%22Coach%20Chris%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23000000%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage/svg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHJlY3QgeD0iMiIgeT0iNCIgd2lkdGg9IjgiIGhlaWdodD0iNSIgcng9IjIiLz48cmVjdCB4PSIyIiB5PSIxNSIgd2lkdGg9IjgiIGhlaWdodD0iNSIgcng9IjIiLz48cmVjdCB4PSIxNCIgeT0iNCIgd2lkdGg9IjgiIGhlaWdodD0iNSIgcng9IjIiLz48cmVjdCB4PSIxNCIgeT0iMTUiIHdpZHRoPSI4IiBoZWlnaHQ9IjUiIHJ4PSIyIi8+PHBhdGggZD0iTTYgMTJ2Mm0xMi00djJNMiAxMmg4bTQgMGg4TTEwIDZoNG0wIDEyaC00Ii8+PC9zdmc+%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image/svg%2Bxml%22%2C%22purpose%22%3A%22any%20maskable%22%7D%5D%7D">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -404,11 +404,11 @@
     <script>
         lucide.createIcons();
 
-        // PWA Implementation: Service Worker Registration using a Blob URL for single-file portability
+        // PWA Implementation: Service Worker Registration using a Blob URL
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 const swCode = `
-                    const CACHE_NAME = 'coach-chris-v1';
+                    const CACHE_NAME = 'coach-chris-v2';
                     const urlsToCache = [location.href];
                     self.addEventListener('install', (event) => {
                         event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache)));
@@ -443,7 +443,6 @@
             
             if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-            // FIX: Ensure overlay is hidden when navigating back via browser history
             window.addEventListener('pageshow', (event) => {
                 if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
                     launchOverlay.classList.remove('active');
@@ -462,25 +461,18 @@
             document.getElementById('close-modal').addEventListener('click', () => closeModal(infoModal));
             document.getElementById('modal-confirm').addEventListener('click', () => closeModal(infoModal));
             
-            // External link logic: Show animation, THEN redirect
             document.querySelectorAll('a.link-card').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
-                    
                     const targetUrl = this.href;
                     const iconElement = this.querySelector('[data-lucide]');
-                    
                     if (iconElement) {
                         const iconName = iconElement.getAttribute('data-lucide');
                         launchIconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-16 h-16"></i>`;
                         lucide.createIcons();
                     }
-
                     launchOverlay.classList.add('active');
-                    
-                    setTimeout(() => {
-                        window.location.href = targetUrl;
-                    }, 1200);
+                    setTimeout(() => { window.location.href = targetUrl; }, 1200);
                 });
             });
 
