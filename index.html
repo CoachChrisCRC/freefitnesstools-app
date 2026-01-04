@@ -4,16 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Fitness Tools - Coach Chris</title>
-    
-    <!-- PWA Metadata -->
-    <meta name="theme-color" content="#000000">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Coach Chris">
-    
-    <!-- Manifest linked via Data URI for single-file portability -->
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkZyZWUgRml0bmVzcyBUb29scyAtIENvYWNoIENocmlzIiwKICAic2hvcnRfbmFtZSI6ICJDb2FjaCBDaHJpcyIsCiAgInN0YXJ0X3VybCI6ICIuL2luZGV4Lmh0bWwiLAogICJzY29wZSI6ICIuLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiI2YzZjRmNiIsCiAgInRoZW1lX2NvbG9yIjogIiMwMDAwMDAiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2ltZy5pY29uczhwbHVzLmNvbS9wcm9kdWN0cy9maXRuZXNzLzE5Mi5wbmciLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIsCiAgICAgICJwdXJwb3NlIjogImFueSBtYXNrYWJsZSIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9pbWcuaWNvbnM4cGx1cy5jb20vcHJvZHVjdHMvZml0bmVzcy81MTIucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -63,7 +53,6 @@
             background-color: var(--bg-page);
             color: var(--text-main);
             transition: background-color 0.3s ease, color 0.3s ease;
-            -webkit-tap-highlight-color: transparent;
         }
 
         .font-brand { font-family: 'Oswald', sans-serif; }
@@ -102,6 +91,7 @@
 
         .link-card:hover .arrow-icon { transform: translateX(4px); }
 
+        /* Minimal Loading Overlay */
         #launch-overlay {
             position: fixed;
             inset: 0;
@@ -121,6 +111,7 @@
             opacity: 1;
         }
 
+        /* Pulsing Icon Animation */
         #launch-icon-container {
             color: var(--text-heading);
             animation: pulse-scale 1.2s infinite ease-in-out;
@@ -135,6 +126,7 @@
             100% { transform: scale(0.85); opacity: 0.3; }
         }
 
+        /* Theme Toggle Styling */
         .theme-switch-container {
             position: relative;
             width: 44px;
@@ -176,6 +168,7 @@
         [data-theme="light"] .icon-sun { color: var(--btn-text-primary); }
         [data-theme="dark"] .icon-moon { color: var(--btn-text-primary); }
 
+        /* Modal Styles */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -213,14 +206,17 @@
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4" data-theme="light">
 
+    <!-- Minimal Loading Overlay -->
     <div id="launch-overlay">
-        <div id="launch-icon-container"></div>
+        <div id="launch-icon-container">
+            <!-- Icon injected here -->
+        </div>
     </div>
 
-    <!-- Info Modal -->
+    <!-- Information Modal -->
     <div id="modal-overlay" class="modal-overlay">
         <div class="modal-content shadow-2xl">
-            <button id="close-modal" class="absolute top-4 right-4 p-2 rounded-full hover:opacity-70" style="color: var(--text-muted)">
+            <button id="close-modal" class="absolute top-4 right-4 p-2 rounded-full hover:opacity-70 transition-opacity" style="color: var(--text-muted)">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
             <div class="flex flex-col items-center text-center">
@@ -239,6 +235,10 @@
                             <i data-lucide="check-circle" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: var(--text-heading)"></i>
                             <span>Toggle between <strong>Light</strong> and <strong>Dark</strong> modes using the switch above.</span>
                         </li>
+                        <li class="flex gap-2">
+                            <i data-lucide="check-circle" class="w-4 h-4 mt-0.5 flex-shrink-0" style="color: var(--text-heading)"></i>
+                            <span>Calculators provide localized estimates based on standard fitness protocols.</span>
+                        </li>
                     </ul>
                 </div>
                 <button id="modal-confirm" class="w-full mt-8 py-3 font-black uppercase tracking-widest rounded-xl text-xs" style="background-color: var(--bg-btn-primary); color: var(--btn-text-primary)">Start Training</button>
@@ -249,7 +249,7 @@
     <!-- Dev Modal -->
     <div id="dev-modal-overlay" class="modal-overlay">
         <div class="modal-content shadow-2xl">
-            <button id="close-dev-modal" class="absolute top-4 right-4 p-2 rounded-full hover:opacity-70" style="color: var(--text-muted)">
+            <button id="close-dev-modal" class="absolute top-4 right-4 p-2 rounded-full hover:opacity-70 transition-opacity" style="color: var(--text-muted)">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
             <div class="flex flex-col items-center text-center">
@@ -267,7 +267,7 @@
         </div>
     </div>
 
-    <!-- Main App Container -->
+    <!-- Main Card -->
     <div class="app-card w-full max-w-md rounded-3xl overflow-hidden flex flex-col items-center">
         
         <header class="w-full px-8 py-10 flex justify-between items-start">
@@ -280,7 +280,7 @@
             <div class="flex flex-col items-center gap-3">
                 <div class="flex flex-col items-center gap-1.5">
                     <span class="text-[9px] font-black uppercase tracking-widest opacity-60" style="color: var(--text-muted)">Theme</span>
-                    <div id="theme-toggle" class="theme-switch-container">
+                    <div id="theme-toggle" class="theme-switch-container" title="Toggle Light/Dark">
                         <div class="theme-switch-circle"></div>
                         <div class="theme-switch-icons">
                             <i data-lucide="sun" class="icon-sun"></i>
@@ -288,7 +288,7 @@
                         </div>
                     </div>
                 </div>
-                <button id="open-info" class="p-2.5 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center" style="background-color: var(--bg-toggle); color: var(--text-heading)">
+                <button id="open-info" class="p-2.5 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 flex items-center justify-center" style="background-color: var(--bg-toggle); color: var(--text-heading)" title="How to use">
                     <i data-lucide="help-circle" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -308,6 +308,7 @@
             </div>
 
             <div class="space-y-3 flex flex-col w-full">
+                <!-- Internal Tools turned External -->
                 <a href="https://coachchriscrc.github.io/wodgenerator" target="_blank" rel="noopener noreferrer" class="link-card external-link p-4 rounded-xl">
                     <div class="flex items-center space-x-4">
                         <i data-lucide="zap" class="w-5 h-5"></i>
@@ -316,6 +317,7 @@
                     <i data-lucide="external-link" class="arrow-icon w-4 h-4 opacity-60"></i>
                 </a>
 
+                <!-- Internal Tools -->
                 <div data-tool="1rm" class="link-card tool-btn p-4 rounded-xl"> 
                     <div class="flex items-center space-x-4">
                         <i data-lucide="dumbbell" class="w-5 h-5"></i>
@@ -324,6 +326,7 @@
                     <i data-lucide="arrow-right" class="arrow-icon w-5 h-5 transition-transform duration-300"></i>
                 </div>
 
+                <!-- External Tools -->
                 <a href="https://coachchriscrc.github.io/free-calorie-calculator" target="_blank" rel="noopener noreferrer" class="link-card external-link p-4 rounded-xl">
                     <div class="flex items-center space-x-4">
                         <i data-lucide="utensils" class="w-5 h-5"></i>
@@ -357,57 +360,67 @@
                 </div>
             </div>
 
+            <!-- Social Media Section -->
             <div class="flex justify-center space-x-12 mt-12 pb-4">
-                <a href="#" class="group flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-all">
+                <a href="#" class="group flex flex-col items-center gap-2 hover:opacity-100 transition-all opacity-50" style="color: var(--text-main)">
                     <i data-lucide="message-circle" class="w-6 h-6"></i>
                     <span class="text-[9px] font-black uppercase tracking-widest">WhatsApp</span>
                 </a>
-                <a href="#" class="group flex flex-col items-center gap-2 opacity-50 hover:opacity-100 transition-all">
+                <a href="#" class="group flex flex-col items-center gap-2 hover:opacity-100 transition-all opacity-50" style="color: var(--text-main)">
                     <i data-lucide="instagram" class="w-6 h-6"></i>
                     <span class="text-[9px] font-black uppercase tracking-widest">Instagram</span>
+                </a>
+                <a href="#" class="group flex flex-col items-center gap-2 hover:opacity-100 transition-all opacity-50" style="color: var(--text-main)">
+                    <i data-lucide="facebook" class="w-6 h-6"></i>
+                    <span class="text-[9px] font-black uppercase tracking-widest">Facebook</span>
                 </a>
             </div>
         </main>
     </div>
 
+    <!-- Footer -->
     <footer class="w-full text-center py-8 px-6 max-w-lg" style="color: var(--text-muted)">
-        <p class="text-[8px] italic opacity-70 mb-4 uppercase tracking-widest">Disclaimer: Informational use only.</p>
-        <div class="text-[9px] uppercase tracking-[0.15em] font-bold">
+        <div class="mb-6 space-y-2">
+            <h4 class="text-[9px] font-black uppercase tracking-[0.2em]">Disclaimer</h4>
+            <p class="text-[8px] leading-normal normal-case opacity-70 italic">
+                The content provided by these tools is for informational purposes only and is not intended as medical advice.
+            </p>
+        </div>
+        <div class="text-[8px] sm:text-[9px] uppercase tracking-[0.1em] sm:tracking-[0.15em] font-bold leading-relaxed">
             <p>&copy; <span id="current-year"></span> COACH CHRIS | CIRCULAR ROOTS COACHING</p>
+            <p>All Rights Reserved.</p>
         </div>
     </footer>
 
     <script>
         lucide.createIcons();
 
-        // COMPATIBLE SERVICE WORKER FOR PWA INSTALLABILITY
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                const swCode = `
-                    const CACHE_NAME = 'coach-chris-v2';
-                    const urlsToCache = ['./', './index.html'];
-                    self.addEventListener('install', event => {
-                        event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)));
-                    });
-                    self.addEventListener('fetch', event => {
-                        event.respondWith(caches.match(event.request).then(response => response || fetch(event.request)));
-                    });
-                `;
-                const blob = new Blob([swCode], { type: 'application/javascript' });
-                const workerUrl = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(workerUrl).catch(err => console.log('SW failed', err));
-            });
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             const body = document.body;
             const themeToggle = document.getElementById('theme-toggle');
+            const yearSpan = document.getElementById('current-year');
             const infoModal = document.getElementById('modal-overlay');
             const devModal = document.getElementById('dev-modal-overlay');
             const launchOverlay = document.getElementById('launch-overlay');
             const launchIconContainer = document.getElementById('launch-icon-container');
+            const devTitle = document.getElementById('dev-title');
+            const devText = document.getElementById('dev-text');
+            const devIconWrapper = document.getElementById('dev-icon-wrapper');
             
-            document.getElementById('current-year').textContent = new Date().getFullYear();
+            const toolData = {
+                '1rm': { title: "Heavy Loading", text: "Finalizing precision formulas for power and strength lifts. Coming soon.", icon: "dumbbell" },
+                'timer': { title: "Synchronizing", text: "Our performance clock is being calibrated for interval training. Coming soon.", icon: "timer" },
+                'newsletter': { title: "Drafting Intel", text: "Assembling unconventional training wisdom for your inbox. Coming soon.", icon: "mail" }
+            };
+            
+            if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+            // FIX: Ensure overlay is hidden when navigating back via browser history
+            window.addEventListener('pageshow', (event) => {
+                if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+                    launchOverlay.classList.remove('active');
+                }
+            });
 
             themeToggle.addEventListener('click', () => {
                 const isDark = body.getAttribute('data-theme') === 'dark';
@@ -421,33 +434,36 @@
             document.getElementById('close-modal').addEventListener('click', () => closeModal(infoModal));
             document.getElementById('modal-confirm').addEventListener('click', () => closeModal(infoModal));
             
-            document.querySelectorAll('a.external-link').forEach(link => {
+            // External link logic: Show animation, THEN redirect
+            document.querySelectorAll('a.link-card').forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
+                    
+                    const targetUrl = this.href;
                     const iconElement = this.querySelector('[data-lucide]');
+                    
                     if (iconElement) {
-                        launchIconContainer.innerHTML = `<i data-lucide="${iconElement.getAttribute('data-lucide')}" class="w-16 h-16"></i>`;
+                        const iconName = iconElement.getAttribute('data-lucide');
+                        launchIconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-16 h-16"></i>`;
                         lucide.createIcons();
                     }
+
                     launchOverlay.classList.add('active');
-                    setTimeout(() => window.location.href = this.href, 1000);
+                    
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, 1200);
                 });
             });
 
-            const toolData = {
-                '1rm': { title: "Heavy Loading", text: "Precision formulas coming soon.", icon: "dumbbell" },
-                'timer': { title: "Synchronizing", text: "Interval clock calibrating.", icon: "timer" },
-                'newsletter': { title: "Drafting Intel", text: "Assembling wisdom for your inbox.", icon: "mail" }
-            };
-
             document.querySelectorAll('.tool-btn').forEach(btn => {
-                if(btn.classList.contains('external-link')) return;
                 btn.addEventListener('click', () => {
-                    const data = toolData[btn.getAttribute('data-tool')];
+                    const toolKey = btn.getAttribute('data-tool');
+                    const data = toolData[toolKey];
                     if (data) {
-                        document.getElementById('dev-title').textContent = data.title;
-                        document.getElementById('dev-text').textContent = data.text;
-                        document.getElementById('dev-icon-wrapper').innerHTML = `<i data-lucide="${data.icon}" class="w-8 h-8"></i>`;
+                        devTitle.textContent = data.title;
+                        devText.textContent = data.text;
+                        devIconWrapper.innerHTML = `<i data-lucide="${data.icon}" class="w-8 h-8" style="color: var(--text-heading)"></i>`;
                         lucide.createIcons();
                         openModal(devModal);
                     }
@@ -456,8 +472,11 @@
 
             document.getElementById('close-dev-modal').addEventListener('click', () => closeModal(devModal));
             document.getElementById('dev-modal-confirm').addEventListener('click', () => closeModal(devModal));
+
+            [infoModal, devModal].forEach(m => m.addEventListener('click', (e) => {
+                if (e.target === m) closeModal(m);
+            }));
         });
     </script>
 </body>
 </html>
-
