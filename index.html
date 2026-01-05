@@ -364,6 +364,15 @@
                     </div>
                     <span class="text-[10px] font-black bg-white text-black px-2 py-0.5 rounded uppercase">FREE</span>
                 </div>
+
+                <!-- New Get Coaching Button -->
+                <a href="https://coachchriscrc.carrd.co/#services" target="_blank" rel="noopener noreferrer" class="link-card external-link p-4 rounded-xl shadow-lg border-2" style="border-color: var(--text-heading)">
+                    <div class="flex items-center space-x-4">
+                        <i data-lucide="trending-up" class="w-5 h-5"></i>
+                        <span class="font-bold text-base uppercase tracking-wider">Get Coaching</span>
+                    </div>
+                    <i data-lucide="external-link" class="arrow-icon w-4 h-4 opacity-60"></i>
+                </a>
             </div>
 
             <!-- Social Media Section -->
@@ -386,15 +395,17 @@
 
     <!-- Footer -->
     <footer class="w-full text-center py-8 px-6 max-w-lg" style="color: var(--text-muted)">
-        <div class="mb-6 space-y-2">
+        <div class="mb-6 space-y-2 text-center">
             <h4 class="text-[9px] font-black uppercase tracking-[0.2em]">Disclaimer</h4>
             <p class="text-[8px] leading-normal normal-case opacity-70 italic">
                 The content provided by these tools is for informational purposes only and is not intended as medical advice.
             </p>
         </div>
-        <div class="text-[8px] sm:text-[9px] uppercase tracking-[0.1em] sm:tracking-[0.15em] font-bold leading-relaxed">
+        <div class="text-[8px] sm:text-[9px] uppercase tracking-[0.1em] sm:tracking-[0.15em] font-bold leading-relaxed space-y-1 text-center">
             <p>&copy; <span id="current-year"></span> COACH CHRIS | CIRCULAR ROOTS COACHING</p>
+            <p>TRAIN UNCNVNTNL</p>
             <p>All Rights Reserved.</p>
+            <p>Fitter | Stronger | Better</p>
         </div>
     </footer>
 
@@ -495,14 +506,14 @@
             
             document.querySelectorAll('a.link-card').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    e.preventDefault();
                     const targetUrl = this.href;
                     const iconElement = this.querySelector('[data-lucide]');
                     if (iconElement) {
                         const iconName = iconElement.getAttribute('data-lucide');
-                        launchIconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-16 h-16"></i>`;
+                        launchIconContainer.innerHTML = `<i data-lucide="${iconName}" class="w-16 h-16" style="color: var(--text-heading)"></i>`;
                         lucide.createIcons();
                     }
+                    e.preventDefault();
                     launchOverlay.classList.add('active');
                     setTimeout(() => { window.location.href = targetUrl; }, 1200);
                 });
